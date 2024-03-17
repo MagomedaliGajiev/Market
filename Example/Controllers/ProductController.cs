@@ -1,4 +1,6 @@
-﻿using Example.Models;
+﻿using Example.Abstractions;
+using Example.Models;
+using Example.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Controllers
@@ -7,92 +9,35 @@ namespace Example.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly ProductContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public ProductController(ProductContext context)
+        public ProductController(IProductRepository repository)
         {
-            _context = context;
+            _productRepository = repository;
         }
 
         [HttpGet("getProducts")]
         public ActionResult GetProducts()
         {
-            var products = _context.Products.Select(x => new Product()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description
-            }).ToList();
-            return Ok(products);
+            return Ok(_productRepository.GetProducts());
         }
 
-        [HttpPost("postProducts")]
-        public ActionResult PostProducts([FromQuery] string name, int categoryId, decimal cost, string description)
+        [HttpPost("addProduct")]
+        public ActionResult AddProduct([FromBody] ProductModel productModel)
         {
-            if (!_context.Products.Any(x => x.Name.ToLower() == name.ToLower()))
-            {
-                _context.Products.Add(new Product()
-                {
-                    Id = categoryId,
-                    Name = name,
-                    Cost = cost,
-                    Description = description
-                });
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return Conflict();
-            }
+            return Ok(_productRepository.AddProduct(productModel));
         }
 
-        [HttpDelete("deleteProduct")]
-        public ActionResult DeleteProduct(int productId)
+        [HttpGet("getProductCategories")]
+        public ActionResult GetProductCategorries()
         {
-            var product = _context.Products.Find(productId);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok(_productRepository.GetProductCategories());
         }
 
-        [HttpDelete("deleteCategory")]
-        public ActionResult DeleteCategory(int categoryId)
+        [HttpPost("addProductCategories")]
+        public ActionResult AddProductCategorie([FromBody] ProductCategoryModel productCategoryModel)
         {
-            var category = _context.ProductCategories.Find(categoryId);
-            if (category != null)
-            {
-                _context.ProductCategories.Remove(category);
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
-        }
-
-        [HttpPut("updateProductPrice")]
-        public ActionResult UpdateProductPrice(int productId, decimal newPrice)
-        {
-            var product = _context.Products.Find(productId);
-            if (product != null)
-            {
-                product.Cost = newPrice;
-                _context.SaveChanges();
-                return Ok();
-            }
-            else
-            {
-                return NotFound();
-            }
+            return Ok(_productRepository.AddProductCategory(productCategoryModel));
         }
     }
 }
