@@ -60,5 +60,16 @@ namespace Example.Controllers
             return File(new System.Text.UTF8Encoding().GetBytes(content), "text/csv", "report.csv");
 
         }
+
+        [HttpGet("getProductsCSVUrl")]
+        public ActionResult<string> GetProductsCSVUrl()
+        {
+            var books = _productRepository.GetProducts();
+            var  content = GetCsv(books);
+            var fileName = $"books{DateTime.Now.ToBinary().ToString()}.csv";
+            System.IO.File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles", fileName), content);
+
+            return $"https://{Request.Host.ToString()}/static/{fileName}";
+        }
     }
 }
