@@ -2,6 +2,7 @@
 using Example.Models;
 using Example.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace Example.Controllers
 {
@@ -38,6 +39,17 @@ namespace Example.Controllers
         public ActionResult AddProductCategorie([FromBody] ProductCategoryModel productCategoryModel)
         {
             return Ok(_productRepository.AddProductCategory(productCategoryModel));
+        }
+
+        private string GetCsv(IEnumerable<ProductModel> products)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var product in products)
+            {
+                sb.AppendLine($"{product.Id};{product.Name};{product.Description}\n");
+            }
+            return sb.ToString();
         }
     }
 }
