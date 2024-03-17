@@ -1,7 +1,8 @@
-using Autofac;
+    using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Example.Abstractions;
 using Example.Repository;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+var staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "StaticFiles");
+Directory.CreateDirectory(staticFilesPath);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        staticFilesPath),
+    RequestPath = "/static"
+});
 
 app.UseHttpsRedirection();
 
