@@ -1,5 +1,4 @@
 ﻿using Example.Abstractions;
-using Example.Models;
 using Example.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -50,6 +49,16 @@ namespace Example.Controllers
                 sb.AppendLine($"{product.Id};{product.Name};{product.Description}\n");
             }
             return sb.ToString();
+        }
+
+        [HttpGet("getProductsCSV")]
+        public FileContentResult GetProductsCSV()
+        {
+
+            var products = _productRepository.GetProducts();
+            var content = GetCsv(products);
+            return File(new System.Text.UTF8Encoding().GetBytes(content), "text/csv", "report.csv");
+
         }
     }
 }
