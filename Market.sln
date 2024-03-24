@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Example", "Example\Example.csproj", "{D4BE8385-E6EB-40D5-8D25-220360E3A78D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphQl", "GraphQl\GraphQl.csproj", "{A0BB7BBC-1E22-4650-AEFD-EA81822F8BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphQl", "GraphQl\GraphQl.csproj", "{A0BB7BBC-1E22-4650-AEFD-EA81822F8BFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyApiGateway", "MyApiGateway\MyApiGateway.csproj", "{73FF1754-4CE9-47F8-AC15-D3CB730F9F55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A0BB7BBC-1E22-4650-AEFD-EA81822F8BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0BB7BBC-1E22-4650-AEFD-EA81822F8BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0BB7BBC-1E22-4650-AEFD-EA81822F8BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73FF1754-4CE9-47F8-AC15-D3CB730F9F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73FF1754-4CE9-47F8-AC15-D3CB730F9F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73FF1754-4CE9-47F8-AC15-D3CB730F9F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73FF1754-4CE9-47F8-AC15-D3CB730F9F55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
