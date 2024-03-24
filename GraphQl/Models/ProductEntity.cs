@@ -10,7 +10,7 @@ namespace GraphQl.Models
         public string Description { get; set; }
         public uint Amount { get; set; }
         public decimal Cost { get; set; }
-        public virtual Category Category { get; set; }
-        public virtual Storage Storage { get; set; }
+        public virtual CategoryEntity? Category { get; set; }
+        public virtual StorageEntity? Storage { get; set; }
     }
 }
