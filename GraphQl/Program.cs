@@ -2,7 +2,9 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GraphQl.Abstractions;
 using GraphQl.Mapper;
+using GraphQl.Mutation;
 using GraphQl.Query;
+using GraphQl.Services;
 using GraphQl.Sevices;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,7 @@ namespace GraphQl
             builder.Services.AddSingleton<IProductService, ProductService>();
             builder.Services.AddSingleton<ICategoryService, CategoryService>();
             builder.Services.AddSingleton<IStorageService, StorageService>();
+            builder.Services.AddSingleton<IProductStockService, ProductStockService>();
 
             builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
             builder.Host.ConfigureContainer<ContainerBuilder>(cb =>
@@ -31,7 +34,12 @@ namespace GraphQl
 
             builder.Services
                 .AddGraphQLServer()
-                .AddQueryType<MySimpleQuery>();
+                .AddQueryType(d => d.Name("Query"))
+                    .AddType<MySimpleQuery>()
+                    .AddType<ProductStockQuery>()
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddType<MySimpleMutation>()
+                    .AddType<ProductStockMutation>();
 
             builder.Services.AddSingleton<AppDbContext>();
 

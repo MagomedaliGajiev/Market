@@ -49,8 +49,8 @@ namespace GraphQl.Migrations
                     Description = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Amount = table.Column<long>(type: "bigint", nullable: false),
                     Cost = table.Column<decimal>(type: "numeric", nullable: false),
-                    CategoryId = table.Column<int>(type: "integer", nullable: false),
-                    StorageId = table.Column<int>(type: "integer", nullable: false)
+                    CategoryId = table.Column<int>(type: "integer", nullable: true),
+                    StorageId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,10 +59,35 @@ namespace GraphQl.Migrations
                         name: "FK_Products_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Products_Storages_StorageId",
+                        column: x => x.StorageId,
+                        principalTable: "Storages",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductStocks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    StorageId = table.Column<int>(type: "integer", nullable: false),
+                    Quantity = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductStocks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductStocks_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Products_Storages_StorageId",
+                        name: "FK_ProductStocks_Storages_StorageId",
                         column: x => x.StorageId,
                         principalTable: "Storages",
                         principalColumn: "Id",
@@ -92,6 +117,16 @@ namespace GraphQl.Migrations
                 column: "StorageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductStocks_ProductId",
+                table: "ProductStocks",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductStocks_StorageId",
+                table: "ProductStocks",
+                column: "StorageId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Storages_Name",
                 table: "Storages",
                 column: "Name",
@@ -101,6 +136,9 @@ namespace GraphQl.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "ProductStocks");
+
             migrationBuilder.DropTable(
                 name: "Products");
 
